@@ -48,6 +48,15 @@ public class TerminalServiceTest {
 	}
 	
 	@Test(expected=BusinessAPIException.class)
+	public void errorWhenTerminalExist() throws BusinessAPIException {
+		Mockito.when( repository.exists( 44332211 ) )
+		.thenReturn(true);
+		
+		Terminal terminal = this.service.addTerminal("44332211;123PWWIN;0;F04A2E4088B;4;8.00b3;0;16777216;PWWIN");
+		
+	}
+	
+	@Test(expected=BusinessAPIException.class)
 	public void errorWhenInvalidInputString() throws BusinessAPIException {
 		
 		Terminal terminal = this.service.addTerminal("44332211;123PWWIN;0;F04A2E4088B;4;8.00b3;0;16777216;PWWIN");

@@ -24,7 +24,11 @@ public class TerminalService {
 	
 	public Terminal addTerminal(Terminal terminal) throws BusinessAPIException {
 		
-		if( TerminalJsonSchemaValidator.isValidTerminal(terminal) ){				
+		if( TerminalJsonSchemaValidator.isValidTerminal(terminal) ){
+			if( repository.exists( terminal.getLogic() ) ){
+				throw new BusinessAPIException("Terminal já existe logic: " + terminal.getLogic());
+			}
+			
 			return repository.save(terminal);
 		}else{
 			throw new BusinessAPIException("Terminal não é válido segundo o json schema");

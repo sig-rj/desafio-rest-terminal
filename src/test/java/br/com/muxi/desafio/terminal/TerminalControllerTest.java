@@ -86,6 +86,21 @@ public class TerminalControllerTest {
 	}
 	
 	@Test
+	public void addTerminalWhenAlreadyExists() throws Exception {
+		repository.save(simpleTerminal());
+		repository.save(otherTerminal());
+		
+		mockMvc.perform(
+					post("/1.0/terminal")
+					.content("44332211;123;PWWIN;0;F04A2E4088B;4;8.00b3;0;16777216;PWWIN")
+					.contentType( MediaType.TEXT_HTML)
+				)
+		.andExpect(status().isBadRequest())
+		.andExpect(jsonPath("message", equalTo("Terminal já existe logic: 44332211") ) );
+		
+	}
+	
+	@Test
 	public void addTerminalinvalidInput() throws Exception {
 		mockMvc.perform(
 					post("/1.0/terminal")
