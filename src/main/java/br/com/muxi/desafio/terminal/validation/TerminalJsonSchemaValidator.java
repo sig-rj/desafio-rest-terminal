@@ -7,9 +7,6 @@ import java.io.InputStreamReader;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -35,11 +32,8 @@ public class TerminalJsonSchemaValidator implements ConstraintValidator<Terminal
 		super();
 		
 		try {
-			ClassPathResource cpr = new ClassPathResource("terminal.json");
-			InputStream is = cpr.getInputStream();
-			InputStreamReader reader = new InputStreamReader(is);
-			
-			this.jsonSchemaNode = getSchemaNode( JsonLoader.fromReader(reader) );
+			String schema = "{\"title\":\"Terminal\",\"type\":\"object\",\"properties\":{\"logic\":{\"type\":\"integer\"},\"serial\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"sam\":{\"type\":\"integer\",\"minimum\":0},\"ptid\":{\"type\":\"string\"},\"plat\":{\"type\":\"integer\"},\"version\":{\"type\":\"string\"},\"mxr\":{\"type\":\"integer\"},\"VERFM\":{\"type\":\"string\"}},\"required\":[\"logic\",\"serial\",\"model\",\"version\"]}";
+			this.jsonSchemaNode = getSchemaNode( JsonLoader.fromString(schema) );
 		} catch (ProcessingException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
