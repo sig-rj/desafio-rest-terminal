@@ -82,6 +82,37 @@ public class TerminalServiceTest {
 		
 	}
 	
+	@Test
+	public void whenSearchByLogic() throws BusinessAPIException {
+		final int LOGIC_ID = 44332211;
+		
+		Mockito.when( repository.findByLogic( 44332211 ) )
+		.thenReturn(new Terminal(44332211,"123","PWWIN",0,"F04A2E4088B",4,"8.00b3",0,16777216,"PWWIN"));
+		
+		Terminal terminal = this.service.findByLogic(44332211);
+		
+		assertNotNull("terminal retornou nulo", terminal);
+		
+		assertThat(terminal, samePropertyValuesAs(simpleTerminal()));
+		
+	}
+	
+	@Test(expected=BusinessAPIException.class)
+	public void whenSearchByLogicNotFound() throws BusinessAPIException {
+		final int LOGIC_ID = 44332211;
+		
+		Mockito.when( repository.findByLogic( LOGIC_ID ) )
+		.thenReturn(null);
+		
+		Terminal terminal = this.service.findByLogic(LOGIC_ID);
+	}
+	
+	@Test(expected=BusinessAPIException.class)
+	public void whenSearchByLogicNotANumber() throws BusinessAPIException {
+				
+		Terminal terminal = this.service.findByLogic("12312A123_B");
+	}
+	
 	private static Terminal simpleTerminal(){
 		return new Terminal(44332211,"123","PWWIN",0,"F04A2E4088B",4,"8.00b3",0,16777216,"PWWIN");
 	}

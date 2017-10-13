@@ -80,8 +80,64 @@ public class TerminalControllerTest {
 		.andExpect(jsonPath("message", equalTo("número de propriedades incorreto.") ) );
 		
 	}
+	
+	@Test
+	public void findTerminal() throws Exception {
+		repository.save(simpleTerminal());
+		repository.save(otherTerminal());
+		
+		mockMvc.perform(
+					get("/1.0/terminal/44332211")
+					.contentType( MediaType.APPLICATION_JSON)
+				)
+		.andExpect(status().isOk())
+		.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+		.andExpect(jsonPath("logic", equalTo(44332211)))
+		.andExpect(jsonPath("serial", equalTo("123")))
+		.andExpect(jsonPath("model", equalTo("PWWIN")))
+		.andExpect(jsonPath("sam", equalTo(0)))
+		.andExpect(jsonPath("ptid", equalTo("F04A2E4088B")))
+		.andExpect(jsonPath("plat", equalTo(4)))
+		.andExpect(jsonPath("version", equalTo("8.00b3")))
+		.andExpect(jsonPath("mxr", equalTo(0)))
+		.andExpect(jsonPath("mxf", equalTo(16777216)))
+		.andExpect(jsonPath("VERFM", equalTo("PWWIN")));
+		
+	}
+	
+	@Test
+	public void tryFindTerminalWithNotNumberLogic() throws Exception {
+		repository.save(simpleTerminal());
+		repository.save(otherTerminal());
+		
+		mockMvc.perform(
+					get("/1.0/terminal/SA44332211")
+					.contentType( MediaType.APPLICATION_JSON)
+				)
+		.andExpect(status().isBadRequest())
+		.andExpect(jsonPath("message", equalTo("logic não é um número inteiro: SA44332211") ) );
+		
+	}
+	
+	@Test
+	public void tryFindTerminalNotFound() throws Exception {
+		repository.save(simpleTerminal());
+		repository.save(otherTerminal());
+		
+		mockMvc.perform(
+					get("/1.0/terminal/222222")
+					.contentType( MediaType.APPLICATION_JSON)
+				)
+		.andExpect(status().isBadRequest())
+		.andExpect(jsonPath("message", equalTo("Terminal não encontrado logic: 222222") ) );
+		
+	}
 
 	private static Terminal simpleTerminal(){
 		return new Terminal(44332211,"123","PWWIN",0,"F04A2E4088B",4,"8.00b3",0,16777216,"PWWIN");
+	}
+	
+	private static Terminal otherTerminal(){
+		return new Terminal(77712233,"1234","PWWIN",0,"F04A2E4088B",4,"8.00b3",0,16777216,"PWWIN");
 	}
 }

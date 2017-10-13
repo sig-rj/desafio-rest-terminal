@@ -31,5 +31,27 @@ public class TerminalService {
 		}
 		
 	}
+
+	public Terminal findByLogic(String logic) throws BusinessAPIException {
+		Integer l;
+		
+		try {
+			l = Integer.parseInt(logic);	
+		} catch (NumberFormatException e) {
+			throw new BusinessAPIException("logic não é um número inteiro: " + logic);
+		}
+		
+		return findByLogic(l);
+	}
+	
+	public Terminal findByLogic(Integer logic) throws BusinessAPIException {
+		Terminal terminal = repository.findByLogic(logic);
+		
+		if(terminal == null){
+			throw new BusinessAPIException("Terminal não encontrado logic: " + logic);
+		}
+		
+		return terminal;
+	}
 	
 }
