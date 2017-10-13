@@ -68,6 +68,18 @@ public class TerminalControllerTest {
 		
 		assertThat("propriedades do terminal adicionado ao BD não estão corretas", simpleTerminal(), samePropertyValuesAs( fromDB  ) );
 	}
+	
+	@Test
+	public void addTerminalinvalidInput() throws Exception {
+		mockMvc.perform(
+					post("/1.0/terminal")
+					.content("123;PWWIN;0;F04A2E4088B;4;8.00b3;0;16777216;PWWIN")
+					.contentType( MediaType.TEXT_HTML)
+				)
+		.andExpect(status().isBadRequest())
+		.andExpect(jsonPath("message", equalTo("número de propriedades incorreto.") ) );
+		
+	}
 
 	private static Terminal simpleTerminal(){
 		return new Terminal(44332211,"123","PWWIN",0,"F04A2E4088B",4,"8.00b3",0,16777216,"PWWIN");
