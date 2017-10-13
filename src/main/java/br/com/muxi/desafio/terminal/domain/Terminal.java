@@ -24,6 +24,10 @@ public class Terminal {
 	private Integer mxf;	
 	private String verfm;
 	
+	public Terminal(){
+		super();
+	}
+	
 	public Terminal(Integer logic, String serial, String model, String version) {
 		super();
 		this.logic = logic;
