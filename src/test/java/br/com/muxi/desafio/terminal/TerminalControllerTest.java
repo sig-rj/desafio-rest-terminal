@@ -253,6 +253,17 @@ public class TerminalControllerTest {
 		
 	}
 	
+	@Test
+	public void updateLogicNoContent() throws Exception {
+		repository.save(simpleTerminal());
+		repository.save(otherTerminal());
+		
+		mockMvc.perform(put("/1.0/terminal/44332211")
+				.contentType(MediaType.APPLICATION_JSON))
+		.andExpect(status().isBadRequest());
+	
+	}
+	
 	
 	@Test
 	public void shouldNotAcceptDelete() throws Exception {
