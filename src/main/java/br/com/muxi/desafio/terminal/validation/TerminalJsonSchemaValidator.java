@@ -32,11 +32,7 @@ public class TerminalJsonSchemaValidator implements ConstraintValidator<Terminal
 		super();
 		
 		try {
-			InputStream in = this.getClass().getClassLoader()
-                    .getResourceAsStream("terminal.json");
-			InputStreamReader reader = new InputStreamReader(in);
-			
-			this.jsonSchemaNode = getSchemaNode( JsonLoader.fromReader(reader) );
+			this.jsonSchemaNode = getSchemaNode( JsonLoader.fromURL(ClassLoader.getSystemResource("terminal.json")) );
 		} catch (ProcessingException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
