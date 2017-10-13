@@ -2,6 +2,7 @@ package br.com.muxi.desafio.terminal.validation;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -31,7 +32,11 @@ public class TerminalJsonSchemaValidator implements ConstraintValidator<Terminal
 		super();
 		
 		try {
-			this.jsonSchemaNode = getSchemaNode( JsonLoader.fromResource("/terminal.json") );
+			InputStream in = this.getClass().getClassLoader()
+                    .getResourceAsStream("terminal.json");
+			InputStreamReader reader = new InputStreamReader(in);
+			
+			this.jsonSchemaNode = getSchemaNode( JsonLoader.fromReader(reader) );
 		} catch (ProcessingException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
