@@ -33,6 +33,12 @@ public class TerminalService {
 	}
 
 	public Terminal findByLogic(String logic) throws BusinessAPIException {
+		Integer l = parseLogic(logic);
+		
+		return findByLogic(l);
+	}
+
+	private Integer parseLogic(String logic) throws BusinessAPIException {
 		Integer l;
 		
 		try {
@@ -40,8 +46,7 @@ public class TerminalService {
 		} catch (NumberFormatException e) {
 			throw new BusinessAPIException("logic não é um número inteiro: " + logic);
 		}
-		
-		return findByLogic(l);
+		return l;
 	}
 	
 	public Terminal findByLogic(Integer logic) throws BusinessAPIException {
@@ -52,6 +57,41 @@ public class TerminalService {
 		}
 		
 		return terminal;
+	}
+
+	public Terminal update(String logic, Terminal terminal) throws BusinessAPIException{
+		Integer l = parseLogic(logic);
+		
+		if(terminal.getLogic() == null ){
+			terminal.setLogic(l);
+		}
+		
+		if( !terminal.getLogic().equals(l) ){
+			throw new BusinessAPIException("Paramateros inválidos.");
+		}
+		
+		return update(terminal);
+	}
+	
+	public Terminal update(Terminal terminal) throws BusinessAPIException{
+		
+		if( terminal == null ){
+			throw new BusinessAPIException("Terminal não pode ser null.");
+		}
+		
+		if( terminal.getLogic() == null ){
+			throw new BusinessAPIException("Terminal não tem logic.");
+		}
+		
+		if( !TerminalJsonSchemaValidator.isValidTerminal(terminal) ){				
+			throw new BusinessAPIException("Terminal não é válido segundo o json schema.");
+		}
+		
+		if( !repository.exists(terminal.getLogic()) ){
+			throw new BusinessAPIException("Terminal não encontrado : " + terminal.getLogic());
+		}
+		
+		return repository.save(terminal);
 	}
 	
 }

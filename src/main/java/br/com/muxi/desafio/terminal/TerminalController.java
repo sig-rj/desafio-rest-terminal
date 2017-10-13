@@ -30,4 +30,9 @@ public class TerminalController {
 		return service.findByLogic(logic);
 	}
 	
+	@RequestMapping(value = {"/{logic}"},method = RequestMethod.PUT, consumes = { MediaType.APPLICATION_JSON_VALUE })
+	public Terminal update(@PathVariable String logic, @RequestBody Terminal terminal) throws BusinessAPIException {
+		return service.update(logic, terminal);
+	}
+	
 }
