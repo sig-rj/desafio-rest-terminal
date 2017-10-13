@@ -7,6 +7,9 @@ import java.io.InputStreamReader;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -32,7 +35,11 @@ public class TerminalJsonSchemaValidator implements ConstraintValidator<Terminal
 		super();
 		
 		try {
-			this.jsonSchemaNode = getSchemaNode( JsonLoader.fromURL(ClassLoader.getSystemResource("terminal.json")) );
+			ClassPathResource cpr = new ClassPathResource("terminal.json");
+			InputStream is = cpr.getInputStream();
+			InputStreamReader reader = new InputStreamReader(is);
+			
+			this.jsonSchemaNode = getSchemaNode( JsonLoader.fromReader(reader) );
 		} catch (ProcessingException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
