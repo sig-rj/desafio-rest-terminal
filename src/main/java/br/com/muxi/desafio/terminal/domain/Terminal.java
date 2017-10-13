@@ -1,8 +1,19 @@
-package br.com.muxi.desafio.terminal;
+package br.com.muxi.desafio.terminal.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import br.com.muxi.desafio.terminal.validation.TerminalJsonSchema;
+
+@Entity
+@TerminalJsonSchema
 public class Terminal {
 	
+	@Id
 	private Integer logic;
+	
 	private String serial;
 	private String model;
 	private Integer sam;
@@ -13,7 +24,7 @@ public class Terminal {
 	private Integer mxf;	
 	private String verfm;
 	
-	public Terminal(int logic, String serial, String model, String version) {
+	public Terminal(Integer logic, String serial, String model, String version) {
 		super();
 		this.logic = logic;
 		this.serial = serial;
@@ -21,7 +32,7 @@ public class Terminal {
 		this.version = version;
 	}
 	
-	public Terminal(int logic, String serial, String model, Integer sam, String ptid, Integer plat, String version,
+	public Terminal(Integer logic, String serial, String model, Integer sam, String ptid, Integer plat, String version,
 			Integer mxr, Integer mxf, String verfm) {
 		super();
 		this.logic = logic;
@@ -90,6 +101,8 @@ public class Terminal {
 	public void setMxf(Integer mxf) {
 		this.mxf = mxf;
 	}
+	
+	@JsonProperty("VERFM")
 	public String getVerfm() {
 		return verfm;
 	}

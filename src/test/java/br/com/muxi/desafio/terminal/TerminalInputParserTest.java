@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import static org.hamcrest.beans.SamePropertyValuesAs.*;
 import org.junit.Test;
 
+import br.com.muxi.desafio.terminal.domain.Terminal;
 import br.com.muxi.desafio.terminal.exception.TerminalParseException;
 
 public class TerminalInputParserTest {

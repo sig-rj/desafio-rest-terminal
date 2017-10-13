@@ -2,6 +2,7 @@ package br.com.muxi.desafio.terminal;
 
 import org.springframework.util.StringUtils;
 
+import br.com.muxi.desafio.terminal.domain.Terminal;
 import br.com.muxi.desafio.terminal.exception.TerminalParseException;
 
 public class TerminalInputParser {
